@@ -24,6 +24,7 @@ const { config } = require("./config/config");
 const {
   generalLimiter,
   authLimiter,
+  passwordResetLimiter,
   apiLimiter,
   corsOptions,
   helmetConfig,
@@ -56,7 +57,7 @@ try {
 
   // Rate limiting
   app.use(generalLimiter);
-  app.use("/auth", authLimiter);
+  // Removed blanket authLimiter from /auth - now applied per route in production/auth.js
   app.use("/api", apiLimiter);
 
   // Request logging
@@ -105,7 +106,7 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(flash());
 
-// Passport configuration
+// Passport configuration - Initialize BEFORE routes
 function initializePassport() {
   try {
     const User = require("./models/User");
@@ -121,6 +122,9 @@ function initializePassport() {
   }
 }
 
+// Initialize Passport immediately (not waiting for DB)
+initializePassport();
+
 // Database connection
 mongoose.set("strictQuery", true);
 
@@ -129,7 +133,6 @@ mongoose
   .then(() => {
     console.log("✅ MongoDB connected successfully");
     console.log(`📊 Database: ${config.database.uri.includes('localhost') ? 'Local MongoDB' : 'Cloud MongoDB'}`);
-    initializePassport();
     
     // Seed database if enabled
     if (config.development.seedDatabase) {
@@ -146,7 +149,6 @@ mongoose
       console.log("💡 For production: Set MONGO_URI environment variable");
     }
     console.log("⚠️ App will start without database connection - some features may not work");
-    initializePassport();
   });
 
 // Global middleware for user and flash messages
@@ -237,18 +239,5 @@ if (process.env.NODE_ENV !== 'production' || process.env.VERCEL !== '1') {
   });
 }
 
+// Export the app
 module.exports = app;
-
-app.get('/orders', ordersController.getOrders);
-// Routes
-app.use(productRoutes);
-app.use(reviewRoutes);
-app.use(authRoutes);
-app.use(cartRoutes);
-app.use(productApi);
-app.use(orderRoutes);
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`server connected at port : ${PORT}`);
-});
-

@@ -30,6 +30,12 @@ const userSchema = new mongoose.Schema({
       ref: "Product",
     },
   ],
+  resetPasswordToken: {
+    type: String,
+  },
+  resetPasswordExpires: {
+    type: Date,
+  },
 });
 
 userSchema.plugin(passportLocalMongoose); //always apply on schema

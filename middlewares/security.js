@@ -31,6 +31,13 @@ const authLimiter = createRateLimiter(
   'Too many login attempts, please try again later'
 );
 
+// Password reset rate limiter (more lenient than login)
+const passwordResetLimiter = createRateLimiter(
+  15 * 60 * 1000, // 15 minutes
+  10, // 10 attempts
+  'Too many password reset attempts, please try again later'
+);
+
 // API rate limiter
 const apiLimiter = createRateLimiter(
   15 * 60 * 1000, // 15 minutes
@@ -50,11 +57,30 @@ const helmetConfig = {
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrc: ["'self'"],
+      styleSrc: [
+        "'self'", 
+        "'unsafe-inline'",
+        "https://cdn.jsdelivr.net",
+        "https://cdnjs.cloudflare.com",
+      ],
+      scriptSrc: [
+        "'self'",
+        "https://cdn.jsdelivr.net",
+        "https://kit.fontawesome.com",
+        "https://ka-f.fontawesome.com",
+      ],
       imgSrc: ["'self'", "data:", "https:"],
-      connectSrc: ["'self'"],
-      fontSrc: ["'self'"],
+      connectSrc: [
+        "'self'", 
+        "https://ka-f.fontawesome.com",
+        "https://cdn.jsdelivr.net",
+      ],
+      fontSrc: [
+        "'self'",
+        "https://cdn.jsdelivr.net",
+        "https://cdnjs.cloudflare.com",
+        "https://ka-f.fontawesome.com",
+      ],
       objectSrc: ["'none'"],
       mediaSrc: ["'self'"],
       frameSrc: ["'none'"],
@@ -141,6 +167,19 @@ const validateInput = (schema) => {
   };
 };
 
+// Form validation middleware (redirects with flash message)
+const validateForm = (schema) => {
+  return (req, res, next) => {
+    const { error } = schema.validate(req.body);
+    if (error) {
+      const errorMessages = error.details.map(detail => detail.message).join(', ');
+      req.flash('error', errorMessages);
+      return res.redirect('back');
+    }
+    next();
+  };
+};
+
 // Sanitize input middleware
 const sanitizeInput = (req, res, next) => {
   // Basic XSS protection
@@ -170,6 +209,7 @@ const sanitizeInput = (req, res, next) => {
 module.exports = {
   generalLimiter,
   authLimiter,
+  passwordResetLimiter,
   apiLimiter,
   corsOptions,
   helmetConfig,
@@ -178,5 +218,6 @@ module.exports = {
   requestLogger,
   securityHeaders,
   validateInput,
+  validateForm,
   sanitizeInput,
 }; 
