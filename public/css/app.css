@@ -28,7 +28,7 @@ main{
 }
 
 body {
-    background-color: #f8f9fa;
+    background-color: #f8f9fa !important;
     color: var(--text-dark);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -136,6 +136,30 @@ body {
     .starability-basic {
       font-size: 1.5rem;
     }
+  }
+
+  /* Password Toggle Styles */
+  .password-input {
+    padding-right: 45px !important;
+  }
+
+  .toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #6a11cb;
+    transition: color 0.3s ease;
+    z-index: 10;
+  }
+
+  .toggle-password:hover {
+    color: #fc4a1a;
+  }
+
+  .position-relative {
+    position: relative;
   }
 
 

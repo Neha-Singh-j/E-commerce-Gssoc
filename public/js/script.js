@@ -111,4 +111,18 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
   }
-  
+});
+
+// Helper function to show toast messages
+function showToast(message, type = 'success') {
+  // You can implement a custom toast or use a library
+  alert(message);
+}
+
+// Helper function to update cart count
+function updateCartCount(count) {
+  const cartBadge = document.querySelector('.cart-count');
+  if (cartBadge) {
+    cartBadge.textContent = count;
+  }
+}

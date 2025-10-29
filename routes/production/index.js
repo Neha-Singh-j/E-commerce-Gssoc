@@ -19,7 +19,8 @@ router.get('/', (req, res) => {
 
 // Mount routes with proper prefixes
 router.use('/', staticRoutes); // Mount static routes at root level FIRST
-router.use('/auth', authRoutes);
+router.use('/auth', authRoutes); // Auth routes with /auth prefix
+router.use('/', authRoutes); // Auth routes also available without prefix for backward compatibility
 router.use('/products', productRoutes);
 router.use('/cart', cartRoutes);
 router.use('/api', apiRoutes);
