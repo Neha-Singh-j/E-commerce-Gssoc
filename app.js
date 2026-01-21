@@ -13,7 +13,7 @@ const cartRoutes = require("./routes/cart");
 const productApi = require("./routes/api/productapi"); //api
 const passport = require("passport"); //pass
 const LocalStrategy = require("passport-local"); //pass
-const ordersController = require("./controllers/ordersController"); 
+const ordersController = require("./controllers/ordersController");
 const orderRoutes = require('./routes/orders');
 const User = require("./models/User"); //pass
 require("dotenv").config(); // Make sure this is at the top
@@ -130,7 +130,7 @@ mongoose
     console.log("✅ MongoDB connected successfully");
     console.log(`📊 Database: ${config.database.uri.includes('localhost') ? 'Local MongoDB' : 'Cloud MongoDB'}`);
     initializePassport();
-    
+
     // Seed database if enabled
     if (config.development.seedDatabase) {
       console.log("🌱 Seeding database...");
@@ -170,15 +170,22 @@ app.get("/health", (req, res) => {
   });
 });
 
-
-
-// Simple test routes (mounted first)
+// Home route - render the actual website
 app.get("/", (req, res) => {
+  res.render("home", {
+    title: "Welcome to Shopiko",
+    description: "Your one-stop shop for everything you need",
+  });
+});
+
+// API status route
+app.get("/api/status", (req, res) => {
   res.json({
-    message: "Shopiko is running on Vercel!",
+    message: "Shopiko is running!",
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || "development",
-    platform: "Vercel"
+    platform: "Express.js",
+    status: "success"
   });
 });
 
@@ -251,4 +258,3 @@ const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`server connected at port : ${PORT}`);
 });
-

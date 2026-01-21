@@ -1,0 +1,57 @@
+<!-- Chatbot Widget -->
+<div id="chatbot-widget" class="chatbot-widget">
+  <!-- Chatbot Toggle Button -->
+  <div id="chatbot-toggle" class="chatbot-toggle">
+    <i class="fas fa-comments"></i>
+  </div>
+
+  <!-- Chatbot Container -->
+  <div id="chatbot-container" class="chatbot-container">
+    <!-- Chatbot Header -->
+    <div class="chatbot-header">
+      <div class="chatbot-avatar">
+        <i class="fas fa-robot"></i>
+      </div>
+      <div class="chatbot-info">
+        <h5 class="mb-0">Shopiko Support</h5>
+        <small class="text-muted">Online</small>
+      </div>
+      <button id="chatbot-close" class="chatbot-close">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Chatbot Messages -->
+    <div id="chatbot-messages" class="chatbot-messages">
+      <div class="message bot-message">
+        <div class="message-content">
+          <p>👋 Hi! I'm your Shopiko assistant. How can I help you today?</p>
+        </div>
+      </div>
+      <div class="message bot-message">
+        <div class="message-content">
+          <p>Choose from these options:</p>
+          <div class="quick-options">
+            <button class="option-btn" data-action="products">
+              <i class="fas fa-search"></i> Ask about products
+            </button>
+            <button class="option-btn" data-action="faq">
+              <i class="fas fa-question-circle"></i> General FAQs
+            </button>
+            <button class="option-btn" data-action="contact">
+              <i class="fas fa-envelope"></i> Contact Support
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chatbot Input -->
+    <div class="chatbot-input">
+      <input type="text" id="chatbot-input-field" placeholder="Type your message..." />
+      <button id="chatbot-send" class="chatbot-send">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+</div>
